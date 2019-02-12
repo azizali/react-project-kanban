@@ -1,0 +1,21 @@
+body {
+  background-color: #ECEEEE;
+}
+
+.col-3{
+  padding-left: 0px;
+  padding-right: 25px;
+}
+
+.row .col-3:last-child{
+  padding-right: 0px;
+}
+
+.col-header{
+  color: #fff;
+  text-align: center;
+}
+
+.strong{
+  font-weight: bold
+}
