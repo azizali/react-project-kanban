@@ -1,21 +1,12 @@
 body {
-  background-color: #ECEEEE;
+	background-color: #eceeee;
 }
 
-.col-3{
-  padding-left: 0px;
-  padding-right: 25px;
+.col-header {
+	color: #fff;
+	text-align: center;
 }
 
-.row .col-3:last-child{
-  padding-right: 0px;
-}
-
-.col-header{
-  color: #fff;
-  text-align: center;
-}
-
-.strong{
-  font-weight: bold
+.strong {
+	font-weight: bold;
 }

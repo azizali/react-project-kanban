@@ -1,118 +1,99 @@
-import './index.css'
-import React from 'react'
-import { render } from 'react-dom'
-import Column from './Column'
-import Card from './Card'
-import AddBtn from './AddBtn'
+import './index.css';
+import React from 'react';
+import { render } from 'react-dom';
+import Column from './Column';
+import Card from './Card';
+import AddBtn from './AddBtn';
 
-class App extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            columns: [{
-                name: 'Winnie',
-                color: '#8E6E95',
-                cards: [{
-                    text: 'W 1'
-                },
-                {
-                    text: 'W 2'
-                }]
-            },
-            {
-                name: 'Bob',
-                color: '#39A59C',
-                cards: [{
-                    text: 'B 1'
-                },
-                {
-                    text: 'B 2 '
-                }]
-            },
-            {
-                name: 'Thomas',
-                color: '#344759',
-                cards: [{
-                    text: 'T 1'
-                },
-                {
-                    text: 'T 2'
-                }]
-            },
-            {
-                name: 'George',
-                color: '#E8741E',
-                cards: [{
-                    text: 'G 1'
-                },
-                {
-                    text: 'G 2'
-                }]
-            }]
-        }
-        this.handleClick = this.handleClick.bind(this)
-        this.handleMove = this.handleMove.bind(this)
-    }
-    handleClick(colIndex) {
-        const column = this.state.columns[colIndex]
+const columnsData = [
+	{
+		name: 'To dos',
+		color: '#be6dd0',
+		cards: [
+			{
+				task: 'Setup app layout'
+			},
+			{
+				task: 'Learn about state'
+			},
+			{
+				task: 'Learn about using events'
+			},
+			{
+				task: 'keep building'
+			}
+		]
+	},
+	{
+		name: 'Blocked',
+		color: '#d63d3d',
+		cards: [
+			{
+				task: 'B 1'
+			},
+			{
+				task: 'B 2 '
+			}
+		]
+	},
+	{
+		name: 'Doing',
+		color: '#344759',
+		cards: [
+			{
+				task: 'T 1'
+			},
+			{
+				task: 'T 2'
+			}
+		]
+	},
+	{
+		name: 'Done',
+		color: '#55ce36',
+		cards: [
+			{
+				task: 'G 1'
+			},
+			{
+				task: 'G 2'
+			}
+		]
+	}
+];
 
-        const input = prompt('Please enter text');
-
-        column.cards.push({
-            text: input
-        })
-
-        this.state.columns[colIndex] = column
-
-        this.setState({
-            columns: this.state.columns
-        })
-    }
-
-    handleMove(destColumn, currentCol, cardIndex) {
-        const card = this.state.columns[currentCol].cards.splice(cardIndex, 1)[0]
-        this.state.columns[destColumn].cards.push(card)
-
-        this.setState({
-            columns: this.state.columns
-        })
-
-    }
-
-    render() {
-        const columnSize = this.state.columns.length
-        return (
-            <div className="row" style={{ margin: "0px 25px" }}>
-                {
-                    this.state.columns.map(({ name, color, cards }, columnIndex) => {
-                        return (
-                            <Column key={columnIndex} name={name} color={color}>
-                                {
-                                    cards.map(({ text }, cardIndex) => {
-                                        return (
-                                            <Card
-                                                key={cardIndex}
-                                                leftEnabled={(columnIndex !== 0) ? true : false}
-                                                rightEnabled={(columnIndex < columnSize - 1) ? true : false}
-                                                moveLeftCb={() => {
-                                                    this.handleMove(columnIndex - 1, columnIndex, cardIndex)
-                                                }}
-                                                moveRightCb={() => {
-                                                    this.handleMove(columnIndex + 1, columnIndex, cardIndex)
-                                                }}
-                                                text={text}
-                                            />
-                                        )
-                                    })
-                                }
-                                <AddBtn clickHandler={() => { this.handleClick(columnIndex) }} />
-                            </Column>
-                        )
-                    })
-                }
-            </div>
-        )
-    }
+function App({ columns }) {
+	const columnSize = columns.length;
+	return (
+		<div className="container mt-4">
+			<div className="row text-center">
+				<div className="col">
+					<h1>Kanban Board</h1>
+					<p className="lead">Perfect way to stay organized</p>
+					<hr />
+				</div>
+			</div>
+			<div className="row">
+				{columns.map(({ name, color, cards }, columnIndex) => {
+					return (
+						<Column key={columnIndex} name={name} color={color}>
+							{cards.map(({ task }, cardIndex) => {
+								return (
+									<Card
+										key={cardIndex}
+										leftEnabled={columnIndex !== 0 ? true : false}
+										rightEnabled={columnIndex < columnSize - 1 ? true : false}
+										task={task}
+									/>
+								);
+							})}
+							<AddBtn />
+						</Column>
+					);
+				})}
+			</div>
+		</div>
+	);
 }
 
-render(<App />, document.querySelector('#app'))
+render(<App columns={columnsData} />, document.querySelector('#app'));
