@@ -4,64 +4,54 @@ import Card from './Card';
 import AddBtn from './AddBtn';
 import { connect } from 'react-redux';
 
-class App extends React.Component {
-	constructor(props) {
-		super(props);
-		this.handleAdd = this.handleAdd.bind(this);
-	}
+function App({ addCard, moveCard, columns }) {
+	const colSize = columns.length;
 
-	handleAdd(colIndex) {
+	function handleAdd(colIndex) {
 		const input = prompt('Please enter task');
 		if (input) {
-			this.props.addCard(colIndex, input);
+			addCard(colIndex, input);
 		}
 	}
 
-	render() {
-		const { columns, moveCard } = this.props;
-		const colSize = columns.length;
-		return (
-			<div className="container mt-4">
-				<div className="row text-center">
-					<div className="col">
-						<h1>Kanban Board</h1>
-						<p className="lead">Perfect way to stay organized</p>
-						<hr />
-					</div>
-				</div>
-				<div className="row">
-					{columns.map(({ name, color, cards }, colIndex) => {
-						return (
-							<Column key={colIndex} name={name} color={color}>
-								{cards.map(({ task }, cardIndex) => {
-									return (
-										<Card
-											key={cardIndex}
-											leftEnabled={colIndex !== 0 ? true : false}
-											rightEnabled={colIndex < colSize - 1 ? true : false}
-											moveLeftCb={() => {
-												moveCard(colIndex - 1, colIndex, cardIndex);
-											}}
-											moveRightCb={() => {
-												moveCard(colIndex + 1, colIndex, cardIndex);
-											}}
-											task={task}
-										/>
-									);
-								})}
-								<AddBtn
-									clickHandler={() => {
-										this.handleAdd(colIndex);
-									}}
-								/>
-							</Column>
-						);
-					})}
+	return (
+		<div className="container mt-4">
+			<div className="row text-center">
+				<div className="col">
+					<h1>Kanban Board</h1>
+					<p className="lead">Perfect way to stay organized</p>
+					<hr />
 				</div>
 			</div>
-		);
-	}
+			<div className="row">
+				{columns.map(({ name, color, cards }, colIndex) => {
+					return (
+						<Column key={colIndex} name={name} color={color}>
+							{cards.map(({ task }, cardIndex) => {
+								return (
+									<Card
+										key={cardIndex}
+										leftEnabled={colIndex !== 0 ? true : false}
+										rightEnabled={colIndex < colSize - 1 ? true : false}
+										moveLeftCb={() => {
+											moveCard(colIndex - 1, colIndex, cardIndex);
+										}}
+										moveRightCb={() => {
+											moveCard(colIndex + 1, colIndex, cardIndex);
+										}}
+										task={task}
+									/>
+								);
+							})}
+							<AddBtn clickHandler={() => handleAdd(colIndex)} />
+						</Column>
+					);
+				})}
+			</div>
+		</div>
+	);
 }
+
 function mapStateToProps(state) {
 	return {
 		columns: state.columns
@@ -91,4 +81,5 @@ function mapDispatchToProps(dispatch) {
 		}
 	};
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(App);
