@@ -1,18 +1,18 @@
 {
-  "name": "react-setup",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "./node_modules/parcel/bin/cli.js ./src/index.html"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "react": "^16.8.1",
-    "react-dom": "^16.8.1"
-  },
-  "devDependencies": {
-    "parcel": "^1.11.0"
-  }
+	"name": "react-project-kanban",
+	"version": "1.0.0",
+	"description": "react-project-kanban",
+	"main": "index.js",
+	"scripts": {
+		"start": "./node_modules/parcel/bin/cli.js ./src/index.html"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"react": "^16.8.1",
+		"react-dom": "^16.8.1"
+	},
+	"devDependencies": {
+		"parcel": "^1.11.0"
+	}
 }
