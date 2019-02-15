@@ -8,21 +8,13 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleAdd = this.handleAdd.bind(this);
-		// this.handleMove = this.handleMove.bind(this);
 	}
 
 	handleAdd(colIndex) {
-		// const column = this.state.columns[colIndex];
-		// const input = prompt('Please enter task');
-		// if (input) {
-		// 	column.cards.push({
-		// 		task: input
-		// 	});
-		// 	this.state.columns[colIndex] = column;
-		// 	this.setState({
-		// 		columns: this.state.columns
-		// 	});
-		// }
+		const input = prompt('Please enter task');
+		if (input) {
+			this.props.addCard(colIndex, input);
+		}
 	}
 
 	render() {

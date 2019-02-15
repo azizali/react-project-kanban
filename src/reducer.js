@@ -60,7 +60,12 @@ const initialState = {
 
 export default (state = initialState, { type, payload }) => {
 	if (type === 'ADD_CARD') {
-		return state;
+		const { colIndex, task } = payload;
+		return produce(state, (draft) => {
+			draft.columns[colIndex].cards.push({
+				task
+			});
+		});
 	} else if (type === 'MOVE_CARD') {
 		const { destColIndex, currColIndex, cardIndex } = payload;
 
