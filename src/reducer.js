@@ -1,3 +1,4 @@
+import produce from 'immer';
 const initialState = {
 	columns: [
 		{
@@ -61,7 +62,12 @@ export default (state = initialState, { type, payload }) => {
 	if (type === 'ADD_CARD') {
 		return state;
 	} else if (type === 'MOVE_CARD') {
-		return state;
+		const { destColIndex, currColIndex, cardIndex } = payload;
+
+		return produce(state, (draft) => {
+			const card = draft.columns[currColIndex].cards.splice(cardIndex, 1)[0];
+			draft.columns[destColIndex].cards.push(card);
+		});
 	} else {
 		return state;
 	}

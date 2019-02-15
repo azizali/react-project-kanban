@@ -7,11 +7,11 @@ import { connect } from 'react-redux';
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		this.handleClick = this.handleClick.bind(this);
-		this.handleMove = this.handleMove.bind(this);
+		this.handleAdd = this.handleAdd.bind(this);
+		// this.handleMove = this.handleMove.bind(this);
 	}
 
-	handleClick(colIndex) {
+	handleAdd(colIndex) {
 		// const column = this.state.columns[colIndex];
 		// const input = prompt('Please enter task');
 		// if (input) {
@@ -25,17 +25,9 @@ class App extends React.Component {
 		// }
 	}
 
-	handleMove(destColumn, currentCol, cardIndex) {
-		// const card = this.state.columns[currentCol].cards.splice(cardIndex, 1)[0];
-		// this.state.columns[destColumn].cards.push(card);
-		// this.setState({
-		// 	columns: this.state.columns
-		// });
-	}
-
 	render() {
-		const { columns } = this.props;
-		const columnSize = columns.length;
+		const { columns, moveCard } = this.props;
+		const colSize = columns.length;
 		return (
 			<div className="container mt-4">
 				<div className="row text-center">
@@ -46,20 +38,20 @@ class App extends React.Component {
 					</div>
 				</div>
 				<div className="row">
-					{columns.map(({ name, color, cards }, columnIndex) => {
+					{columns.map(({ name, color, cards }, colIndex) => {
 						return (
-							<Column key={columnIndex} name={name} color={color}>
+							<Column key={colIndex} name={name} color={color}>
 								{cards.map(({ task }, cardIndex) => {
 									return (
 										<Card
 											key={cardIndex}
-											leftEnabled={columnIndex !== 0 ? true : false}
-											rightEnabled={columnIndex < columnSize - 1 ? true : false}
+											leftEnabled={colIndex !== 0 ? true : false}
+											rightEnabled={colIndex < colSize - 1 ? true : false}
 											moveLeftCb={() => {
-												this.handleMove(columnIndex - 1, columnIndex, cardIndex);
+												moveCard(colIndex - 1, colIndex, cardIndex);
 											}}
 											moveRightCb={() => {
-												this.handleMove(columnIndex + 1, columnIndex, cardIndex);
+												moveCard(colIndex + 1, colIndex, cardIndex);
 											}}
 											task={task}
 										/>
@@ -67,7 +59,7 @@ class App extends React.Component {
 								})}
 								<AddBtn
 									clickHandler={() => {
-										this.handleClick(columnIndex);
+										this.handleAdd(colIndex);
 									}}
 								/>
 							</Column>
@@ -83,4 +75,28 @@ function mapStateToProps(state) {
 		columns: state.columns
 	};
 }
-export default connect(mapStateToProps)(App);
+
+function mapDispatchToProps(dispatch) {
+	return {
+		addCard: (colIndex, task) => {
+			dispatch({
+				type: 'ADD_CARD',
+				payload: {
+					colIndex,
+					task
+				}
+			});
+		},
+		moveCard: (destColIndex, currColIndex, cardIndex) => {
+			dispatch({
+				type: 'MOVE_CARD',
+				payload: {
+					destColIndex,
+					currColIndex,
+					cardIndex
+				}
+			});
+		}
+	};
+}
+export default connect(mapStateToProps, mapDispatchToProps)(App);
