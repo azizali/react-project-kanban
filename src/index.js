@@ -70,6 +70,20 @@ class App extends React.Component {
 		this.handleMove = this.handleMove.bind(this);
 	}
 
+	editTask(colIndex, cardIndex){
+		const col = this.state.columns[colIndex]
+		const card = col.cards[cardIndex]
+		const task = card.task
+		const input = prompt('Enter changes to the task', task)
+		
+		if (input){
+			card.task = input
+			this.setState({
+				columns: this.state.columns
+			})
+		}
+	}
+
 	handleClick(colIndex) {
 		const column = this.state.columns[colIndex];
 
@@ -116,6 +130,8 @@ class App extends React.Component {
 								{cards.map(({ task }, cardIndex) => {
 									return (
 										<Card
+											editTaskCb={()=> 
+												this.editTask(columnIndex, cardIndex)}
 											key={cardIndex}
 											leftEnabled={columnIndex !== 0 ? true : false}
 											rightEnabled={columnIndex < columnSize - 1 ? true : false}
